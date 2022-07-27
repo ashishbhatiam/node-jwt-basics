@@ -1,5 +1,25 @@
+const CustomAPIError = require("../errors/custom-error");
+const jwt = require("jsonwebtoken");
+
 const loginRegister = async (req, res) => {
-  res.send("Testing Login/Register..");
+  const { username, password } = req.body;
+
+  // Custom Validation
+  if (!username || !password) {
+    throw new CustomAPIError("Please provide username & password.", 400);
+  }
+
+  // temp ID
+  const id = new Date().getTime();
+
+  const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+  res.status(200).json({
+    token,
+    msg: "User Created Successfully!",
+    success: true,
+  });
 };
 
 const dashboard = async (req, res) => {
