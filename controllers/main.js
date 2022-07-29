@@ -1,5 +1,6 @@
 const { UnauthorizedError } = require("../errors");
 const jwt = require("jsonwebtoken");
+const StatusCodes = require("http-status-codes");
 
 const loginRegister = async (req, res) => {
   const { username, password } = req.body;
@@ -15,7 +16,7 @@ const loginRegister = async (req, res) => {
   const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     token,
     msg: "User Created Successfully!",
     success: true,
