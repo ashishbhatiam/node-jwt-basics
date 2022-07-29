@@ -23,27 +23,15 @@ const loginRegister = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new CustomAPIError("No token provided.", 401);
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Random Number
-    const secretCode = Math.floor(Math.random() * 100);
-    res.json({
-      msg: `Hello, ${decoded.username}`,
-      secret: `Here is your Authorized data, your secret code is ${
-        token.slice(0, 5) + secretCode
-      }.`,
-    });
-  } catch (error) {
-    throw new CustomAPIError("Not authorized to access this route.", 401);
-  }
+  const { id, username, token } = req.user;
+  // Random Number
+  const secretCode = Math.floor(Math.random() * 100);
+  res.json({
+    msg: `Hello, ${username}`,
+    secret: `Here is your Authorized data, your secret code is ${
+      token.slice(0, 5) + secretCode
+    }.`,
+  });
 };
 
 module.exports = {
