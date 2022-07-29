@@ -1,4 +1,4 @@
-const CustomAPIError = require("../errors/custom-error");
+const { UnauthorizedError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
 const loginRegister = async (req, res) => {
@@ -6,7 +6,7 @@ const loginRegister = async (req, res) => {
 
   // Custom Validation
   if (!username || !password) {
-    throw new CustomAPIError("Please provide username & password.", 400);
+    throw new UnauthorizedError("Please provide username & password.");
   }
 
   // temp ID
